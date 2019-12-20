@@ -100,3 +100,18 @@ func TestPodEnvironmentVariableMarshal(t *testing.T) {
 		assert.Equal(t, targetString, pod)
 	}
 }
+
+func TestPodContainerArtifactBoolMarshal(t *testing.T) {
+	targetString := `{"containers":[{"artifacts":[{"extract":false,"executable":false,"cache":false}],"lifecycle":{}}]}`
+
+	testPod := new(Pod)
+	testArtifact := new(PodArtifact)
+	testContainer := new(PodContainer)
+	testContainer.AddArtifact(testArtifact)
+	testPod.AddContainer(testContainer)
+
+	pod, err := json.Marshal(testPod)
+	if assert.NoError(t, err) {
+		assert.Equal(t, targetString, string(pod))
+	}
+}
